@@ -134,7 +134,7 @@ const GridBoard = () => {
             {/* Center cell - only render once and span 6 columns */}
             {rowIndex === 0 && (
               <div
-                className="col-span-6 row-span-8 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-lg relative overflow-hidden"
+                className="col-span-6 row-span-8 grid-cell flex items-center justify-center text-white font-bold text-lg relative overflow-hidden"
                 style={getCellStyle('center')}
                 onClick={() => handleCellClick('center')}
                 role="button"
