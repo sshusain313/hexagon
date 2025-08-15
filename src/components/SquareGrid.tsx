@@ -61,14 +61,14 @@ const SquareGrid = () => {
   const renderCell = (row: number, col: number) => {
     const cellKey = `${row}-${col}`;
     
-    // Check if this is part of the center area (rows 2-7, cols 2-7)
-    if (row >= 2 && row <= 7 && col >= 2 && col <= 7) {
+    // Check if this is part of the center area (rows 2-6, cols 2-6)
+    if (row >= 2 && row <= 6 && col >= 2 && col <= 6) {
       // Only render the center cell once at position 2,2
       if (row === 2 && col === 2) {
         return (
           <div
             key={`center-${row}-${col}`}
-            className="col-span-6 row-span-6 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-2xl relative overflow-hidden"
+            className="col-span-5 row-span-5 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-2xl relative overflow-hidden"
             style={getCellStyle('center')}
             onClick={() => {
               setSelectedCell('center');
@@ -131,9 +131,9 @@ const SquareGrid = () => {
         <p className="text-gray-600">Click on any cell to upload an image</p>
       </div>
       
-      <div className="grid grid-cols-10 gap-1 p-6 bg-white rounded-xl shadow-2xl">
-        {Array.from({ length: 10 }, (_, row) =>
-          Array.from({ length: 10 }, (_, col) => renderCell(row, col))
+      <div className="grid grid-cols-9 gap-1 p-6 bg-white rounded-xl shadow-2xl">
+        {Array.from({ length: 9 }, (_, row) =>
+          Array.from({ length: 9 }, (_, col) => renderCell(row, col))
         )}
       </div>
       
