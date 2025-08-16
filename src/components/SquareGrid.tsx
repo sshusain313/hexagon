@@ -66,11 +66,11 @@ const SquareGrid = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-      <div className="fixed top-4 left-4 z-10">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-2 sm:p-4 lg:p-8">
+      <div className="fixed top-2 left-2 sm:top-4 sm:left-4 z-10">
         <Link 
           to="/" 
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg transition-colors"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-lg transition-colors text-sm sm:text-base"
         >
           ← Original Grid
         </Link>
@@ -84,139 +84,142 @@ const SquareGrid = () => {
         className="hidden"
       />
       
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Square Grid Layout</h1>
-        <p className="text-gray-600">Click on any cell to upload an image</p>
+      <div className="mb-4 sm:mb-8 text-center px-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">Square Grid Layout</h1>
+        <p className="text-sm sm:text-base text-gray-600">Click on any cell to upload an image</p>
       </div>
       
-      <div className="grid grid-cols-9 gap-1 p-6 bg-white rounded-xl shadow-2xl">
-        {/* Top row - 9 cells */}
-        {Array.from({ length: 9 }, (_, colIndex) => {
-          const cellKey = `0-${colIndex}`;
-          return (
-            <div
-              key={`top-${colIndex}`}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-              style={getCellStyle(cellKey)}
-              onClick={() => handleCellClick('border', { row: 0, col: colIndex })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCellClick('border', { row: 0, col: colIndex });
-                }
-              }}
-            >
-              {!cellImages[cellKey] && (
-                <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                  +
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Middle rows with left border, center cell, and right border */}
-        {Array.from({ length: 7 }, (_, rowIndex) => (
-          <React.Fragment key={`middle-row-${rowIndex}`}>
-            {/* Left border cell */}
-            <div
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-              style={getCellStyle(`${rowIndex + 1}-0`)}
-              onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 0 })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCellClick('border', { row: rowIndex + 1, col: 0 });
-                }
-              }}
-            >
-              {!cellImages[`${rowIndex + 1}-0`] && (
-                <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                  +
-                </div>
-              )}
-            </div>
-
-            {/* Center cell - only render once and span 5 columns and 5 rows */}
-            {rowIndex === 0 && (
+      {/* Responsive container that maintains aspect ratio */}
+      <div className="w-full max-w-[320px] sm:max-w-[480px] md:max-w-[600px] lg:max-w-[720px] xl:max-w-[800px] aspect-square">
+        <div className="grid grid-cols-9 gap-[2px] sm:gap-1 p-2 sm:p-4 lg:p-6 bg-white rounded-lg sm:rounded-xl shadow-2xl w-full h-full">
+          {/* Top row - 9 cells */}
+          {Array.from({ length: 9 }, (_, colIndex) => {
+            const cellKey = `0-${colIndex}`;
+            return (
               <div
-                className="col-span-5 row-span-5 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-2xl relative overflow-hidden cursor-pointer"
-                style={getCellStyle('center')}
-                onClick={() => handleCellClick('center')}
+                key={`top-${colIndex}`}
+                className="grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer aspect-square"
+                style={getCellStyle(cellKey)}
+                onClick={() => handleCellClick('border', { row: 0, col: colIndex })}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    handleCellClick('center');
+                    handleCellClick('border', { row: 0, col: colIndex });
                   }
                 }}
               >
-                {!cellImages['center'] && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span>CENTER</span>
+                {!cellImages[cellKey] && (
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm font-medium opacity-70">
+                    +
                   </div>
                 )}
               </div>
-            )}
+            );
+          })}
 
-            {/* Right border cell */}
-            <div
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-              style={getCellStyle(`${rowIndex + 1}-8`)}
-              onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 8 })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCellClick('border', { row: rowIndex + 1, col: 8 });
-                }
-              }}
-            >
-              {!cellImages[`${rowIndex + 1}-8`] && (
-                <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                  +
+          {/* Middle rows with left border, center cell, and right border */}
+          {Array.from({ length: 7 }, (_, rowIndex) => (
+            <React.Fragment key={`middle-row-${rowIndex}`}>
+              {/* Left border cell */}
+              <div
+                className="grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer aspect-square"
+                style={getCellStyle(`${rowIndex + 1}-0`)}
+                onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 0 })}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCellClick('border', { row: rowIndex + 1, col: 0 });
+                  }
+                }}
+              >
+                {!cellImages[`${rowIndex + 1}-0`] && (
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm font-medium opacity-70">
+                    +
+                  </div>
+                )}
+              </div>
+
+              {/* Center cell - only render once and span 7 columns and 7 rows */}
+              {rowIndex === 0 && (
+                <div
+                  className="col-span-7 row-span-7 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-sm sm:text-lg lg:text-2xl relative overflow-hidden cursor-pointer"
+                  style={getCellStyle('center')}
+                  onClick={() => handleCellClick('center')}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleCellClick('center');
+                    }
+                  }}
+                >
+                  {!cellImages['center'] && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span>CENTER</span>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
-          </React.Fragment>
-        ))}
 
-        {/* Bottom row - 9 cells */}
-        {Array.from({ length: 9 }, (_, colIndex) => {
-          const cellKey = `8-${colIndex}`;
-          return (
-            <div
-              key={`bottom-${colIndex}`}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-              style={getCellStyle(cellKey)}
-              onClick={() => handleCellClick('border', { row: 8, col: colIndex })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCellClick('border', { row: 8, col: colIndex });
-                }
-              }}
-            >
-              {!cellImages[cellKey] && (
-                <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                  +
-                </div>
-              )}
-            </div>
-          );
-        })}
+              {/* Right border cell */}
+              <div
+                className="grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer aspect-square"
+                style={getCellStyle(`${rowIndex + 1}-8`)}
+                onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 8 })}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCellClick('border', { row: rowIndex + 1, col: 8 });
+                  }
+                }}
+              >
+                {!cellImages[`${rowIndex + 1}-8`] && (
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm font-medium opacity-70">
+                    +
+                  </div>
+                )}
+              </div>
+            </React.Fragment>
+          ))}
+
+          {/* Bottom row - 9 cells */}
+          {Array.from({ length: 9 }, (_, colIndex) => {
+            const cellKey = `8-${colIndex}`;
+            return (
+              <div
+                key={`bottom-${colIndex}`}
+                className="grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer aspect-square"
+                style={getCellStyle(cellKey)}
+                onClick={() => handleCellClick('border', { row: 8, col: colIndex })}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCellClick('border', { row: 8, col: colIndex });
+                  }
+                }}
+              >
+                {!cellImages[cellKey] && (
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm font-medium opacity-70">
+                    +
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
       
-      <div className="mt-8 text-center max-w-md">
-        <p className="text-sm text-gray-500">
+      <div className="mt-4 sm:mt-8 text-center max-w-md px-4">
+        <p className="text-xs sm:text-sm text-gray-500">
           Click on any cell to upload an image. Images will be automatically clipped to fit each cell perfectly.
         </p>
       </div>
