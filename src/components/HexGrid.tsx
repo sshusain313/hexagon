@@ -55,17 +55,15 @@ const HexGrid = () => {
     return {};
   };
 
-  // Complete hexagonal grid structure matching the reference image
+  // Grid structure with center cell
   const gridRows = [
-    { cols: 7, offset: 3 },    // Row 1: 7 hexagons
-    { cols: 8, offset: 2.5 },  // Row 2: 8 hexagons  
-    { cols: 9, offset: 2 },    // Row 3: 9 hexagons
-    { cols: 10, offset: 1.5 }, // Row 4: 10 hexagons
-    { cols: 11, offset: 1 },   // Row 5: 11 hexagons (middle row)
-    { cols: 10, offset: 1.5 }, // Row 6: 10 hexagons
-    { cols: 9, offset: 2 },    // Row 7: 9 hexagons
-    { cols: 8, offset: 2.5 },  // Row 8: 8 hexagons
-    { cols: 7, offset: 3 },    // Row 9: 7 hexagons
+    { cols: 4, offset: 4, type: 'hex' },      // Row 1: 4 hexagons
+    { cols: 5, offset: 3.5, type: 'hex' },    // Row 2: 5 hexagons
+    { cols: 6, offset: 3, type: 'hex' },      // Row 3: 6 hexagons
+    { cols: 1, offset: 6, type: 'center' },   // Row 4: Center star cell
+    { cols: 6, offset: 3, type: 'hex' },      // Row 5: 6 hexagons
+    { cols: 5, offset: 3.5, type: 'hex' },    // Row 6: 5 hexagons
+    { cols: 4, offset: 4, type: 'hex' },      // Row 7: 4 hexagons
   ];
 
   return (
@@ -89,7 +87,7 @@ const HexGrid = () => {
       
       <div className="mb-2 sm:mb-4 lg:mb-8 text-center px-4">
         <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-gray-800 mb-1 sm:mb-2">Hexagonal Grid</h1>
-        <p className="text-xs sm:text-sm lg:text-base text-gray-600">Click on any hexagon to upload an image</p>
+        <p className="text-xs sm:text-sm lg:text-base text-gray-600">Click on any cell to upload an image</p>
       </div>
       
       <div className="hex-grid-container">
@@ -99,15 +97,17 @@ const HexGrid = () => {
             className="hex-row" 
             style={{ 
               marginLeft: `${row.offset * 20}px`,
-              marginBottom: '-25px'
+              marginBottom: row.type === 'center' ? '-35px' : '-25px'
             }}
           >
             {Array.from({ length: row.cols }, (_, colIndex) => {
               const cellKey = `${rowIndex}-${colIndex}`;
+              const isCenterCell = row.type === 'center';
+              
               return (
                 <div
                   key={cellKey}
-                  className="hex-cell"
+                  className={isCenterCell ? 'center-cell' : 'hex-cell'}
                   style={getCellStyle(cellKey)}
                   onClick={() => handleCellClick(cellKey)}
                   role="button"
@@ -133,7 +133,7 @@ const HexGrid = () => {
       
       <div className="mt-2 sm:mt-4 lg:mt-8 text-center max-w-md px-4">
         <p className="text-xs sm:text-sm text-gray-500">
-          Click on any hexagonal cell to upload an image. Images will be automatically clipped to fit each hexagon perfectly.
+          Click on any cell to upload an image. Images will be automatically clipped to fit each cell perfectly.
         </p>
       </div>
     </div>

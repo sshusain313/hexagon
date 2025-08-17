@@ -136,11 +136,31 @@ All colors MUST be HSL.
            overflow-hidden;
   }
 
-  .hex-cell:hover {
+  /* Center star-shaped cell */
+  .center-cell {
+    width: 120px;
+    height: 120px;
+    margin: -1px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    
+    /* Create star/cross shape with rounded edges */
+    clip-path: polygon(
+      40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%, 
+      60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
+    );
+    
+    @apply bg-gradient-to-br from-[hsl(var(--grid-primary))] to-[hsl(var(--grid-primary-active))]
+           border border-[hsl(var(--grid-border))]
+           overflow-hidden;
+  }
+
+  .hex-cell:hover, .center-cell:hover {
     @apply scale-110 brightness-110 z-10;
   }
 
-  .hex-cell:active {
+  .hex-cell:active, .center-cell:active {
     @apply scale-95;
   }
 
@@ -155,6 +175,12 @@ All colors MUST be HSL.
       height: 55px;
       margin: -1px;
     }
+    
+    .center-cell {
+      width: 140px;
+      height: 140px;
+      margin: -1px;
+    }
   }
 
   @media (min-width: 768px) {
@@ -163,12 +189,24 @@ All colors MUST be HSL.
       height: 65px;
       margin: -2px;
     }
+    
+    .center-cell {
+      width: 160px;
+      height: 160px;
+      margin: -2px;
+    }
   }
 
   @media (min-width: 1024px) {
     .hex-cell {
       width: 75px;
       height: 75px;
+      margin: -2px;
+    }
+    
+    .center-cell {
+      width: 180px;
+      height: 180px;
       margin: -2px;
     }
   }
