@@ -121,9 +121,9 @@ All colors MUST be HSL.
   }
 
   .hex-cell {
-    width: 40px;
-    height: 40px;
-    margin: 2px;
+    width: 50px;
+    height: 50px;
+    margin: -2px;
     position: relative;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -132,12 +132,12 @@ All colors MUST be HSL.
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     
     @apply bg-gradient-to-br from-[hsl(var(--grid-primary))] to-[hsl(var(--grid-primary-active))]
-           border-2 border-[hsl(var(--grid-border))]
+           border border-[hsl(var(--grid-border))]
            overflow-hidden;
   }
 
   .hex-cell:hover {
-    @apply scale-110 brightness-110;
+    @apply scale-110 brightness-110 z-10;
   }
 
   .hex-cell:active {
@@ -151,29 +151,25 @@ All colors MUST be HSL.
   /* Responsive hexagon sizing */
   @media (min-width: 640px) {
     .hex-cell {
-      width: 50px;
-      height: 50px;
-      margin: 3px;
-    }
-    
-    .hex-row {
-      margin-left: 0;
+      width: 60px;
+      height: 60px;
+      margin: -2px;
     }
   }
 
   @media (min-width: 768px) {
     .hex-cell {
-      width: 60px;
-      height: 60px;
-      margin: 4px;
+      width: 70px;
+      height: 70px;
+      margin: -3px;
     }
   }
 
   @media (min-width: 1024px) {
     .hex-cell {
-      width: 70px;
-      height: 70px;
-      margin: 5px;
+      width: 80px;
+      height: 80px;
+      margin: -3px;
     }
   }
 }

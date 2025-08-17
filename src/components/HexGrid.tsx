@@ -55,19 +55,13 @@ const HexGrid = () => {
     return {};
   };
 
-  // Define the hexagonal grid structure
+  // Define the proper hexagonal grid structure for interlocked honeycomb
   const gridRows = [
-    { cols: 7, offset: 0 },
-    { cols: 8, offset: -0.5 },
-    { cols: 9, offset: 0 },
-    { cols: 8, offset: -0.5 },
-    { cols: 9, offset: 0 },
-    { cols: 8, offset: -0.5 },
-    { cols: 9, offset: 0 },
-    { cols: 8, offset: -0.5 },
-    { cols: 9, offset: 0 },
-    { cols: 8, offset: -0.5 },
-    { cols: 7, offset: 0 },
+    { cols: 5, offset: 2 },    // Top row - 5 hexagons, offset by 2
+    { cols: 6, offset: 1.5 },  // Second row - 6 hexagons, offset by 1.5
+    { cols: 7, offset: 1 },    // Third row - 7 hexagons, offset by 1
+    { cols: 6, offset: 1.5 },  // Fourth row - 6 hexagons, offset by 1.5
+    { cols: 5, offset: 2 },    // Bottom row - 5 hexagons, offset by 2
   ];
 
   return (
@@ -100,8 +94,8 @@ const HexGrid = () => {
             key={rowIndex} 
             className="hex-row" 
             style={{ 
-              marginLeft: `${row.offset * 30}px`,
-              marginBottom: '-15px'
+              marginLeft: `${row.offset * 25}px`,
+              marginBottom: '-20px'
             }}
           >
             {Array.from({ length: row.cols }, (_, colIndex) => {
