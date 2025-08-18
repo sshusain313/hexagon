@@ -55,15 +55,17 @@ const HexGrid = () => {
     return {};
   };
 
-  // Grid structure with center cell
+  // Grid structure matching the reference image - hexagonal flower pattern
   const gridRows = [
-    { cols: 4, offset: 4, type: 'hex' },      // Row 1: 4 hexagons
-    { cols: 5, offset: 3.5, type: 'hex' },    // Row 2: 5 hexagons
-    { cols: 6, offset: 3, type: 'hex' },      // Row 3: 6 hexagons
-    { cols: 1, offset: 6, type: 'center' },   // Row 4: Center star cell
-    { cols: 6, offset: 3, type: 'hex' },      // Row 5: 6 hexagons
-    { cols: 5, offset: 3.5, type: 'hex' },    // Row 6: 5 hexagons
-    { cols: 4, offset: 4, type: 'hex' },      // Row 7: 4 hexagons
+    { cols: 3, offset: 4.5, type: 'hex' },     // Row 1: 3 hexagons (top)
+    { cols: 4, offset: 3.5, type: 'hex' },     // Row 2: 4 hexagons 
+    { cols: 5, offset: 2.5, type: 'hex' },     // Row 3: 5 hexagons
+    { cols: 2, offset: 2, type: 'hex-side' },  // Row 4: 2 side hexagons
+    { cols: 1, offset: 5.5, type: 'center' },  // Row 4: Large center hexagon
+    { cols: 2, offset: 8, type: 'hex-side' },  // Row 4: 2 side hexagons (right)
+    { cols: 5, offset: 2.5, type: 'hex' },     // Row 5: 5 hexagons
+    { cols: 4, offset: 3.5, type: 'hex' },     // Row 6: 4 hexagons
+    { cols: 3, offset: 4.5, type: 'hex' },     // Row 7: 3 hexagons (bottom)
   ];
 
   return (
@@ -96,8 +98,11 @@ const HexGrid = () => {
             key={rowIndex} 
             className="hex-row" 
             style={{ 
-              marginLeft: `${row.offset * 20}px`,
-              marginBottom: row.type === 'center' ? '-35px' : '-25px'
+              marginLeft: `${row.offset * 18}px`,
+              marginBottom: row.type === 'center' ? '-50px' : (row.type === 'hex-side' ? '-25px' : '-22px'),
+              position: row.type === 'hex-side' ? 'absolute' : 'relative',
+              top: row.type === 'hex-side' && rowIndex === 4 ? '0px' : 'auto',
+              zIndex: row.type === 'center' ? 2 : 1
             }}
           >
             {Array.from({ length: row.cols }, (_, colIndex) => {
@@ -107,7 +112,7 @@ const HexGrid = () => {
               return (
                 <div
                   key={cellKey}
-                  className={isCenterCell ? 'center-cell' : 'hex-cell'}
+                  className={isCenterCell ? 'center-hex-cell' : 'hex-cell'}
                   style={getCellStyle(cellKey)}
                   onClick={() => handleCellClick(cellKey)}
                   role="button"
