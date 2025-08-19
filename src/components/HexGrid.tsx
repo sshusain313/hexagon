@@ -60,26 +60,20 @@ const HexGrid = () => {
     return {};
   };
 
-  // Generate hexagonal coordinates for the hollow center pattern
+  // Generate hexagonal coordinates for the ring pattern (hollow center)
   const generateHexCoordinates = (): AxialCoord[] => {
     const coords: AxialCoord[] = [];
-    const outerRadius = 6;
+    const radius = 4;
     
-    for (let q = -outerRadius; q <= outerRadius; q++) {
-      const r1 = Math.max(-outerRadius, -q - outerRadius);
-      const r2 = Math.min(outerRadius, -q + outerRadius);
+    for (let q = -radius; q <= radius; q++) {
+      const r1 = Math.max(-radius, -q - radius);
+      const r2 = Math.min(radius, -q + radius);
       
       for (let r = r1; r <= r2; r++) {
         const distance = Math.max(Math.abs(q), Math.abs(r), Math.abs(-q - r));
         
-        // Create hollow center pattern - exclude inner cells to create the hollow center
-        const isInnerHollow = (
-          (distance <= 2) || // Inner core
-          (distance === 3 && Math.abs(q) <= 1 && Math.abs(r) <= 1) || // Additional inner cells
-          (distance === 3 && Math.abs(-q - r) <= 1 && (Math.abs(q) <= 1 || Math.abs(r) <= 1))
-        );
-        
-        if (!isInnerHollow) {
+        // Only include cells at distance 3 or 4 to create the ring pattern
+        if (distance >= 3 && distance <= 4) {
           coords.push({ q, r });
         }
       }
@@ -181,7 +175,7 @@ const HexGrid = () => {
       
       <div className="mt-2 sm:mt-4 lg:mt-8 text-center max-w-md px-4">
         <p className="text-xs sm:text-sm text-gray-500">
-          Click on any cell to upload an image. The center area is hollow as shown in the reference.
+          Click on any cell to upload an image. The center is completely hollow as shown in the reference.
         </p>
       </div>
     </div>
