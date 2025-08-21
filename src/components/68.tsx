@@ -91,10 +91,8 @@ const SquareGrid = () => {
       
       <div className="grid grid-cols-9 gap-1 p-6 bg-white rounded-xl shadow-2xl">
 
-
-        {/* Top extension - 1 cells centered (non-intrusive full-row) */}
-         <div className="col-span-9 flex justify-center gap-1">
-          {Array.from({ length: 3 }, (_, colIndex) => {
+       <div className="col-span-9 flex justify-center gap-1">
+          {Array.from({ length: 2 }, (_, colIndex) => {
             const cellKey = `-1-${colIndex + 2}`;
             return (
               <div
@@ -278,6 +276,32 @@ const SquareGrid = () => {
         })}
 
          {Array.from({ length: 9 }, (_, colIndex) => {
+          const cellKey = `8-${colIndex}`;
+          return (
+            <div
+              key={`bottom-${colIndex}`}
+              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              style={getCellStyle(cellKey)}
+              onClick={() => handleCellClick('border', { row: 8, col: colIndex })}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleCellClick('border', { row: 8, col: colIndex });
+                }
+              }}
+            >
+              {!cellImages[cellKey] && (
+                <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
+                  +
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {Array.from({ length: 9 }, (_, colIndex) => {
           const cellKey = `8-${colIndex}`;
           return (
             <div

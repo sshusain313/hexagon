@@ -11,17 +11,10 @@ const GridBoard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
 
-  const handleCellClick = (cellType: string, position?: { row: number, col: number }) => {
-    let cellKey: string;
-    
-    if (cellType === 'center') {
-      cellKey = 'center';
-      console.log('Center cell clicked');
-    } else {
-      cellKey = `${position?.row}-${position?.col}`;
-      console.log(`Border cell clicked: row ${position?.row}, col ${position?.col}`);
-    }
-    
+  const COMP_ID='grid-46';
+  const cid= (section: string, row: number | string, col: number | string) => `${COMP_ID}:${section}:${row}-${col}`;  
+
+  const handleCellClick = (cellKey: string) => {
     setSelectedCell(cellKey);
     fileInputRef.current?.click();
   };
@@ -84,23 +77,23 @@ const GridBoard = () => {
         {/* Top extension - 6 cells centered (non-intrusive full-row) */}
         <div className="col-span-8 flex justify-center gap-1">
           {Array.from({ length: 6 }, (_, colIndex) => {
-            const cellKey = `-1-${colIndex + 2}`;
+            const key = cid('top-extension', -1, colIndex + 2);
             return (
               <div
-                key={`top-extension-${colIndex}`}
+                key={key}
                 className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-                style={getCellStyle(cellKey)}
-                onClick={() => handleCellClick('border', { row: -1, col: colIndex + 2 })}
+                style={getCellStyle(key)}
+                onClick={() => handleCellClick(key)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    handleCellClick('border', { row: -1, col: colIndex + 2 });
+                    handleCellClick(key);
                   }
                 }}
               >
-                {!cellImages[cellKey] && (
+                {!cellImages[key] && (
                   <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                     +
                   </div>
@@ -112,23 +105,23 @@ const GridBoard = () => {
         
         {/* Top row - 8 cells */}
         {Array.from({ length: 8 }, (_, colIndex) => {
-          const cellKey = `0-${colIndex}`;
+          const key = cid('top', 0, colIndex);
           return (
             <div
-              key={`top-${colIndex}`}
+              key={key}
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-              style={getCellStyle(cellKey)}
-              onClick={() => handleCellClick('border', { row: 0, col: colIndex })}
+              style={getCellStyle(key)}
+              onClick={() => handleCellClick(key)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleCellClick('border', { row: 0, col: colIndex });
+                  handleCellClick(key);
                 }
               }}
             >
-              {!cellImages[cellKey] && (
+              {!cellImages[key] && (
                 <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                   +
                 </div>
@@ -139,22 +132,22 @@ const GridBoard = () => {
 
         {/* Middle rows with left border, center cell, and right border */}
         {Array.from({ length: 8 }, (_, rowIndex) => (
-          <React.Fragment key={`middle-row-${rowIndex}`}>
+          <React.Fragment key={cid('middle', rowIndex + 1, 0)}>
             {/* Left border cell */}
             <div
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-              style={getCellStyle(`${rowIndex + 1}-0`)}
-              onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 0 })}
+              style={getCellStyle(cid('middle', rowIndex + 1, 0))}
+              onClick={() => handleCellClick(cid('middle', rowIndex + 1, 0))}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleCellClick('border', { row: rowIndex + 1, col: 0 });
+                  handleCellClick(cid('middle', rowIndex + 1, 0));
                 }
               }}
             >
-              {!cellImages[`${rowIndex + 1}-0`] && (
+              {!cellImages[cid('middle', rowIndex + 1, 0)] && (
                 <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                   +
                 </div>
@@ -165,8 +158,8 @@ const GridBoard = () => {
             {rowIndex === 0 && (
               <div
                 className="col-span-6 row-span-8 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-lg relative overflow-hidden"
-                style={getCellStyle('center')}
-                onClick={() => handleCellClick('center')}
+                style={getCellStyle(cid('center', 0, 0))}
+                onClick={() => handleCellClick(cid('center', 0, 0))}
                 role="button"
                 tabIndex={0}
                 // onKeyDown={(e) => {
@@ -176,7 +169,7 @@ const GridBoard = () => {
                 //   }
                 // }}
               >
-                {!cellImages['center'] && (
+                {!cellImages[cid('center', 0, 0)] && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span>CENTER</span>
                   </div>
@@ -187,18 +180,18 @@ const GridBoard = () => {
             {/* Right border cell */}
             <div
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-              style={getCellStyle(`${rowIndex + 1}-7`)}
-              onClick={() => handleCellClick('border', { row: rowIndex + 1, col: 7 })}
+              style={getCellStyle(cid('midR', rowIndex + 1, 7))}
+              onClick={() => handleCellClick(cid('midR', rowIndex + 1, 7))}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleCellClick('border', { row: rowIndex + 1, col: 7 });
+                  handleCellClick(cid('midR', rowIndex + 1, 7));
                 }
               }}
             >
-              {!cellImages[`${rowIndex + 1}-7`] && (
+              {!cellImages[cid('midR', rowIndex + 1, 7)] && (
                 <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                   +
                 </div>
@@ -209,23 +202,24 @@ const GridBoard = () => {
 
         {/* Bottom row - 8 cells */}
         {Array.from({ length: 8 }, (_, colIndex) => {
-          const cellKey = `9-${colIndex}`;
+          // const cellKey = `9-${colIndex}`;
+          const key=cid('bottom', 9, colIndex);
           return (
             <div
-              key={`bottom-${colIndex}`}
+              key={key}
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-              style={getCellStyle(cellKey)}
-              onClick={() => handleCellClick('border', { row: 9, col: colIndex })}
+              style={getCellStyle(key)}
+              onClick={() => handleCellClick(key)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleCellClick('border', { row: 9, col: colIndex });
+                  handleCellClick(key);
                 }
               }}
             >
-              {!cellImages[cellKey] && (
+              {!cellImages[key] && (
                 <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                   +
                 </div>
@@ -237,23 +231,23 @@ const GridBoard = () => {
          {/* Bottom extension - 7 cells centered */}
         <div className="col-span-8 flex justify-center gap-1">
           {Array.from({ length: 7 }, (_, colIndex) => {
-            const cellKey = `-1-${colIndex + 2}`;
+            const key=cid('bottom-extension', -1, colIndex + 2);
             return (
               <div
-                key={`top-extension-${colIndex}`}
+                key={key}
                 className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-                style={getCellStyle(cellKey)}
-                onClick={() => handleCellClick('border', { row: -1, col: colIndex + 2 })}
+                style={getCellStyle(key)}
+                onClick={() => handleCellClick(key)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    handleCellClick('border', { row: -1, col: colIndex + 2 });
+                    handleCellClick(key);
                   }
                 }}
               >
-                {!cellImages[cellKey] && (
+                {!cellImages[key] && (
                   <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                     +
                   </div>

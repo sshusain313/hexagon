@@ -11,9 +11,9 @@ const GridBoard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
 
-  const COMP_ID='grid-43';
-  const cid= (section: string, row: number | string, col: number | string) => `${COMP_ID}:${section}:${row}-${col}`;
-   
+  const COMP_ID='grid-42';
+  const cid = (section: string, row: number | string, col: number | string) => `${COMP_ID}:${section}:${row}-${col}`;
+
   const handleCellClick = (cellKey: string) => {
     setSelectedCell(cellKey);
     fileInputRef.current?.click();
@@ -77,7 +77,8 @@ const GridBoard = () => {
         {/* Top extension - 5 cells centered (non-intrusive full-row) */}
         <div className="col-span-8 flex justify-center gap-1">
           {Array.from({ length: 5 }, (_, colIndex) => {
-            const key = cid('topExt', -1, colIndex + 2);
+            // const cellKey = `-1-${colIndex + 2}`;
+            const key=cid('topExt', -1, colIndex + 2);
             return (
               <div
                 key={key}
@@ -105,10 +106,11 @@ const GridBoard = () => {
         
         {/* Top row - 8 cells */}
         {Array.from({ length: 8 }, (_, colIndex) => {
+          // const cellKey = `0-${colIndex}`;
           const key = cid('top', 0, colIndex);
           return (
             <div
-              key={key}
+              key={`top-${colIndex}`}
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
@@ -132,7 +134,7 @@ const GridBoard = () => {
 
         {/* Middle rows with left border, center cell, and right border */}
         {Array.from({ length: 8 }, (_, rowIndex) => (
-          <React.Fragment key={cid('mid', rowIndex + 1, 0)}>
+          <React.Fragment key={`middle-row-${rowIndex}`}>
             {/* Left border cell */}
             <div
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
@@ -158,8 +160,8 @@ const GridBoard = () => {
             {rowIndex === 0 && (
               <div
                 className="col-span-6 row-span-8 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-lg relative overflow-hidden"
-                style={getCellStyle(cid('center', rowIndex + 1, 0))}
-                onClick={() => handleCellClick(cid('center', rowIndex + 1, 0))}
+                style={getCellStyle(cid('center', 0, 0))}
+                onClick={() => handleCellClick(cid('center', 0, 0))}
                 role="button"
                 tabIndex={0}
                 // onKeyDown={(e) => {
@@ -169,7 +171,7 @@ const GridBoard = () => {
                 //   }
                 // }}
               >
-                {!cellImages['center'] && (
+                {!cellImages[cid('center', 0, 0)] && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span>CENTER</span>
                   </div>
@@ -191,7 +193,7 @@ const GridBoard = () => {
                 }
               }}
             >
-              {!cellImages[cid('midR', rowIndex + 1, 7)] && (
+              {!cellImages[cid('midR', rowIndex + 1, 7)] && (    
                 <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
                   +
                 </div>
@@ -202,12 +204,13 @@ const GridBoard = () => {
 
         {/* Bottom row - 8 cells */}
         {Array.from({ length: 8 }, (_, colIndex) => {
-          const key = `9-${colIndex}`;
+          // const cellKey = `9-${colIndex}`;
+          const key=cid('bottom', 9, colIndex);
           return (
             <div
-              key={key}
+              key={`bottom-${colIndex}`}
               className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
-              style={getCellStyle(key)}
+              style={getCellStyle(key)} 
               onClick={() => handleCellClick(key)}
               role="button"
               tabIndex={0}
@@ -227,13 +230,14 @@ const GridBoard = () => {
           );
         })}
 
-         {/* Bottom extension - 5 cells centered */}
+         {/* Bottom extension - 4 cells centered */}
         <div className="col-span-8 flex justify-center gap-1">
-          {Array.from({ length: 5 }, (_, colIndex) => {
-            const key = cid('bottomExt', -1, colIndex + 2);
+          {Array.from({ length: 4 }, (_, colIndex) => {
+            // const cellKey = `-1-${colIndex + 2}`;
+            const key=cid('bottomExt', -1, colIndex + 2);
             return (
               <div
-                key={key}
+                // key={`top-extension-${colIndex}`}
                 className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
                 style={getCellStyle(key)}
                 onClick={() => handleCellClick(key)}

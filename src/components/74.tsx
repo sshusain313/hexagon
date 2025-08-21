@@ -13,7 +13,7 @@ const SquareGrid = () => {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
 
   // Component-scoped unique ID helpers
-  const COMP_ID = 'grid-69';
+  const COMP_ID = 'grid-74';
   const cid = (section: string, row: number | string, col: number | string) => `${COMP_ID}:${section}:${row}-${col}`;
 
   const handleCellClick = (cellKey: string) => {
@@ -78,20 +78,21 @@ const SquareGrid = () => {
         className="hidden"
       />
       
-      <div className="mb-8 text-center">
+      {/* <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Square Grid Layout</h1>
         <p className="text-gray-600">Click on any cell to upload an image</p>
-      </div>
+      </div> */}
       
-      <div className="grid grid-cols-9 gap-1 p-6 bg-white rounded-xl shadow-2xl">
+      <div className="w-max-6xl overflow-x-auto pb-4">
+        <div className="inline-grid grid-cols-9 gap-1 p-6 bg-white rounded-xl shadow-2xl w-fit">
 
        <div className="col-span-9 flex justify-center gap-1">
-          {Array.from({ length: 3 }, (_, colIndex) => {
+          {Array.from({ length: 8 }, (_, colIndex) => {
             const key = cid('topExt', -1, colIndex + 2);
             return (
               <div
                 key={key}
-                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden"
+                className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden"
                 style={getCellStyle(key)}
                 onClick={() => handleCellClick(key)}
                 role="button"
@@ -114,12 +115,13 @@ const SquareGrid = () => {
         </div>
 
         {/* Top row - 9 cells (A) */}
+        <div className="col-span-9 flex justify-center gap-1">
         {Array.from({ length: 9 }, (_, colIndex) => {
           const key = cid('topA', 0, colIndex);
           return (
             <div
               key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
               role="button"
@@ -139,13 +141,15 @@ const SquareGrid = () => {
             </div>
           );
         })}
+        </div>
 
+        <div className="col-span-9 flex justify-center gap-1">
         {Array.from({ length: 9 }, (_, colIndex) => {
           const key = cid('topB', 0, colIndex);
           return (
             <div
               key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
               role="button"
@@ -165,90 +169,97 @@ const SquareGrid = () => {
             </div>
           );
         })}
+        </div>
 
-        {/* Middle rows with left border cells, center cell, and right border cells */}
-        {Array.from({ length: 5 }, (_, rowIndex) => (
-          <React.Fragment key={`middle-row-${rowIndex}`}>
-            {/* Left border cells - 2 columns */}
-            {Array.from({ length: 2 }, (_, colIndex) => (
-              <div
-                key={cid('midL', rowIndex + 1, colIndex)}
-                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-                style={getCellStyle(cid('midL', rowIndex + 1, colIndex))}
-                onClick={() => handleCellClick(cid('midL', rowIndex + 1, colIndex))}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleCellClick(cid('midL', rowIndex + 1, colIndex));
-                  }
-                }}
-              >
-                {!cellImages[cid('midL', rowIndex + 1, colIndex)] && (
-                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                    +
-                  </div>
-                )}
-              </div>
-            ))}
+        {/* Middle rows replaced with single 5x5 center cell and vertical borders */}
+        <div className="col-span-9 flex justify-center gap-1 items-stretch">
+          {/* Left border: 2 columns, each stacking 5 cells vertically */}
+          {Array.from({ length: 2 }, (_, colIndex) => (
+            <div key={`midL-col-${colIndex}`} className="flex flex-col gap-1">
+              {Array.from({ length: 5 }, (_, rowIndex) => (
+                <div
+                  key={cid('midL', rowIndex + 1, colIndex)}
+                  className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 flex-none grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+                  style={getCellStyle(cid('midL', rowIndex + 1, colIndex))}
+                  onClick={() => handleCellClick(cid('midL', rowIndex + 1, colIndex))}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleCellClick(cid('midL', rowIndex + 1, colIndex));
+                    }
+                  }}
+                >
+                  {!cellImages[cid('midL', rowIndex + 1, colIndex)] && (
+                    <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
+                      +
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
 
-            {/* Center cell - only render once and span 5 columns and 5 rows */}
-            {rowIndex === 0 && (
-              <div
-                className="col-span-5 row-span-5 grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-2xl relative overflow-hidden cursor-pointer"
-                style={getCellStyle(cid('center', 0, 0))}
-                onClick={() => handleCellClick(cid('center', 0, 0))}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleCellClick(cid('center', 0, 0));
-                  }
-                }}
-              >
-                {!cellImages[cid('center', 0, 0)] && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span>CENTER</span>
-                  </div>
-                )}
+          {/* Center: single big cell spanning 5x5 */}
+          <div
+            className="w-[calc(5*2.5rem+4*0.25rem)] sm:w-[calc(5*4rem+4*0.25rem)] md:w-[calc(5*5rem+4*0.25rem)] h-[calc(5*2.5rem+4*0.25rem)] sm:h-[calc(5*4rem+4*0.25rem)] md:h-[calc(5*5rem+4*0.25rem)] shrink-0 flex-none grid-cell active:animate-grid-pulse flex items-center justify-center text-white font-bold text-2xl relative overflow-hidden cursor-pointer"
+            style={getCellStyle(cid('center', 0, 0))}
+            onClick={() => handleCellClick(cid('center', 0, 0))}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleCellClick(cid('center', 0, 0));
+              }
+            }}
+          >
+            {!cellImages[cid('center', 0, 0)] && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span>CENTER</span>
               </div>
             )}
+          </div>
 
-            {/* Right border cells - 2 columns */}
-            {Array.from({ length: 2 }, (_, colIndex) => (
-              <div
-                key={cid('midR', rowIndex + 1, 7 + colIndex)}
-                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
-                style={getCellStyle(cid('midR', rowIndex + 1, 7 + colIndex))}
-                onClick={() => handleCellClick(cid('midR', rowIndex + 1, 7 + colIndex))}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleCellClick(cid('midR', rowIndex + 1, 7 + colIndex));
-                  }
-                }}
-              >
-                {!cellImages[cid('midR', rowIndex + 1, 7 + colIndex)] && (
-                  <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
-                    +
-                  </div>
-                )}
-              </div>
-            ))}
-          </React.Fragment>
-        ))}
+          {/* Right border: 2 columns, each stacking 5 cells vertically */}
+          {Array.from({ length: 2 }, (_, colIndex) => (
+            <div key={`midR-col-${colIndex}`} className="flex flex-col gap-1">
+              {Array.from({ length: 5 }, (_, rowIndex) => (
+                <div
+                  key={cid('midR', rowIndex + 1, 7 + colIndex)}
+                  className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 flex-none grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+                  style={getCellStyle(cid('midR', rowIndex + 1, 7 + colIndex))}
+                  onClick={() => handleCellClick(cid('midR', rowIndex + 1, 7 + colIndex))}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleCellClick(cid('midR', rowIndex + 1, 7 + colIndex));
+                    }
+                  }}
+                >
+                  {!cellImages[cid('midR', rowIndex + 1, 7 + colIndex)] && (
+                    <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium opacity-70">
+                      +
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        
 
         {/* Bottom row - 9 cells (A) */}
+        <div className="col-span-9 flex justify-center gap-1">
         {Array.from({ length: 9 }, (_, colIndex) => {
           const key = cid('bottomA', 8, colIndex);
           return (
             <div
               key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
               role="button"
@@ -268,13 +279,15 @@ const SquareGrid = () => {
             </div>
           );
         })}
+        </div>
 
+        <div className="col-span-9 flex justify-center gap-1">
          {Array.from({ length: 9 }, (_, colIndex) => {
           const key = cid('bottomB', 8, colIndex);
           return (
             <div
               key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
               role="button"
@@ -294,13 +307,15 @@ const SquareGrid = () => {
             </div>
           );
         })}
+        </div>
 
+        <div className="col-span-9 flex justify-center gap-1">
         {Array.from({ length: 9 }, (_, colIndex) => {
           const key = cid('bottomC', 8, colIndex);
           return (
             <div
               key={key}
-              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 grid-cell active:animate-grid-pulse relative overflow-hidden cursor-pointer"
               style={getCellStyle(key)}
               onClick={() => handleCellClick(key)}
               role="button"
@@ -320,13 +335,14 @@ const SquareGrid = () => {
             </div>
           );
         })}
-        
+        </div>
       </div>
       
       <div className="mt-8 text-center max-w-md">
         <p className="text-sm text-gray-500">
           Click on any cell to upload an image. Images will be automatically clipped to fit each cell perfectly.
         </p>
+        </div>
       </div>
     </div>
   );
