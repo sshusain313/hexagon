@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Separator } from './ui/separator';
+import { GridProvider } from './square/context/GridContext';
 
 interface CellImage {
   [key: string]: string;
@@ -21,7 +22,7 @@ const GridBoard = () => {
 
   // Map of all TSX components in this folder
   // We will look for files like "33.tsx", "37.tsx", or any "n.tsx"
-  const componentModules = import.meta.glob('./*.tsx');
+  const componentModules = import.meta.glob('./square/*.tsx');
 
   const handleCellClick = (cellType: string, position?: { row: number, col: number }) => {
     let cellKey: string;
@@ -80,7 +81,7 @@ const GridBoard = () => {
     setLoadError(null);
     setPreviewComp(null);
 
-    const path = `./${n}.tsx` as const;
+    const path = `./square/${n}.tsx` as const;
     // Only allow files with numeric names like 33.tsx, 37.tsx, etc.
     if (!/^[0-9]+\.tsx$/.test(`${n}.tsx`)) {
       setLoadError('Please enter a valid number.');
@@ -93,7 +94,7 @@ const GridBoard = () => {
       const LazyComp = lazy(loader);
       setPreviewComp(() => LazyComp);
     } else {
-      setLoadError(`Component ${n}.tsx not found in src/components.`);
+      setLoadError(`Component ${n}.tsx not found in src/components/square.`);
     }
   };
 
@@ -108,9 +109,10 @@ const GridBoard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
+    <div className="min-h-screen max-w-8xl mx-auto bg-gradient-to-br from-slate-50 to-slate-100 p-3 sm:p-4 md:p-6">
+      <div className="grid gap-4 lg:grid lg:grid-cols-2">
       {/* Preview Controller */}
-      <Card className="w-full max-w-2xl mb-6">
+      <Card className="w-full lg:max-w-2xl lg:h-[75vh]">
         <CardHeader>
           <CardTitle className="text-lg">Component Preview Loader</CardTitle>
         </CardHeader>
@@ -152,19 +154,27 @@ const GridBoard = () => {
       </Card>
 
       {/* Preview Area */}
-      <div className="w-full max-w-5xl mb-8">
+      <div className="mt-4 lg:mt-0">
         {PreviewComp ? (
-          <Card>
+          <Card className="-ml-4 sm:ml-0">
             <CardContent className="p-0">
+              {/* Preview actions */}
+              <div className="flex justify-end p-2">
+                <Button size="sm" onClick={() => window.dispatchEvent(new Event('grid-template-download'))}>
+                  Download
+                </Button>
+              </div>
               <Suspense fallback={<div className="p-6 text-sm text-slate-600">Loading preview...</div>}>
-                <PreviewComp />
+                <GridProvider>
+                  <PreviewComp />
+                </GridProvider>
               </Suspense>
             </CardContent>
           </Card>
         ) : (
           <Card>
             <CardContent className="p-6 text-sm text-slate-500 text-center">
-              Enter a number to preview a component (e.g. 33 or 37).
+              Enter a number to preview a component (e.g. 33 or 37) from src/components/square.
             </CardContent>
           </Card>
         )}
@@ -179,7 +189,7 @@ const GridBoard = () => {
           className="hidden"
           onChange={handleImageUpload}
         />
-        {/* TODO: Render your grid here. Leaving blank as original code had no rendered grid markup in the snippet. */}
+      </div>
       </div>
     </div>
   );
