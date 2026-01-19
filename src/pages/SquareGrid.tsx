@@ -1,5 +1,5 @@
 
-import SquareGrid from "@/components/SquareGrid";
+import SquareGrid from "@/components/GridBoard";
 
 const SquareGridPage = () => {
   return <SquareGrid />;

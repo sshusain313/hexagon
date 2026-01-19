@@ -433,4 +433,3 @@ const HexGrid: React.FC = () => {
 
 export default HexGrid;
 
-
